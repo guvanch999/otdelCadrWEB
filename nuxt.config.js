@@ -22,6 +22,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/axios'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,8 +37,16 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
   ],
+  axios: {
+    // baseURL: process.env.BASE_URL || 'http://192.168.137.1:8090',
+    baseURL: process.env.BASE_URL || 'http://10.102.20.176:8000',
+    proxyHeaders: false,
+    credentials: false
+    // debug: true
+  },
   server: {
     port: 8888, // default: 3000
     host: '0.0.0.0' // default: localhost
