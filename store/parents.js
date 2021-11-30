@@ -16,6 +16,19 @@ export const actions = {
     }).then((response)=>{
       commit('setParentStatuses',response);
     }).catch(err=>console.log(err));
+  },
+  async addStudentParent({commit},data){
+    await this.$axios.$post('/add-parent',data).then(
+      response=>{
+        if(response){
+          return true;
+        } else
+          return  false;
+      }
+    ).catch((err)=>{
+      console.log(err);
+      return false;
+    })
   }
 }
 
