@@ -39,6 +39,29 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    ['nuxt-i18n', {
+      locales: [
+        {
+          name: 'Türkmençe',
+          code: 'tk',
+          iso: 'tk-TM',
+          file: 'tk.js'
+        },
+        {
+          name: 'Русский',
+          code: 'ru',
+          iso: 'ru-RU',
+          file: 'ru.js'
+        },
+      ],
+      langDir: 'lang/',
+      lazy: true,
+      defaultLocale: 'tk',
+    }],
+    ['nuxt-vuex-localstorage', {
+      mode: 'debug',
+      localStorage: ['cart', 'localStorage']
+    }]
   ],
   axios: {
     // baseURL: process.env.BASE_URL || 'http://192.168.137.1:8090',

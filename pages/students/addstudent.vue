@@ -31,8 +31,21 @@
       <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Third part details!</h2>
       <b-input type="text" placeholder="Yasayan yeri:"></b-input>
       <br>
-      <h6>Doglan senesi:</h6>
-      <b-calendar block locale="en-EN"></b-calendar>
+      <b-row>
+        <b-col md="6">
+          <b-dropdown text="Okuwa giren ýeri" style="width:100%" variant="primary" class="m-2" menu-class="w-100" offset="0 5" >
+            <b-dropdown-item >Aşgabat şäheri</b-dropdown-item>
+            <b-dropdown-item>Ahal welaýaty</b-dropdown-item>
+            <b-dropdown-item>Balkan welaýaty</b-dropdown-item>
+            <b-dropdown-item>Daşoguz welaýaty</b-dropdown-item>
+            <b-dropdown-item>Lebap welaýaty</b-dropdown-item>
+            <b-dropdown-item>Mary welaýaty</b-dropdown-item>
+          </b-dropdown>
+        </b-col>
+        <b-col md="6">
+          <b-input type="date"  class="m-2" placeholder="Doglan senesi:"></b-input>
+        </b-col>
+      </b-row>
       <br>
       <b-input type="text" placeholder="Doglan yeri:"></b-input>
       <br>
@@ -40,11 +53,58 @@
       <br>
       <b-input type="text" placeholder="Tamamlan mekdebi:"></b-input>
       <br>
-      <b-input type="text" placeholder="Yasayan yeri:"></b-input>
+      <b-input type="text" placeholder="Bilýän dilleri:"></b-input>
+      <br>
+      <b-input type="text" placeholder="Bilimi boýunça hünäri"></b-input>
+      <br>
+      <b-input type="text" placeholder="Alymlyk dereesi"></b-input>
+      <br>
+      <b-input type="text" placeholder="Bilimi"></b-input>
+      <br>
+      <b-input type="text" placeholder="Partiýa agazasy"></b-input>
+      <br>
+      <b-input type="text" placeholder="Daşary ýurtda bolmagy"></b-input>
+      <br>
+      <b-input type="text" placeholder="Melisiň agzasymy"></b-input>
       <br>
     </b-container>
     <b-container class="mt-3 mb-3 blockClass">
-     <h6 v-for="welayat in welayatlar" :key="welayat.id">{{welayat.name}}</h6>
+      <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Third details</h2>
+      <br>
+      <b-input type="text" placeholder="Öý salgysy"></b-input>
+      <br>
+      <b-input type="text" placeholder="Öý telfony"></b-input>
+      <br>
+      <b-input type="text" placeholder="El tlfony"></b-input>
+      <br>
+      <b-input type="text" placeholder="Kakasynyň telfon belgisi"></b-input>
+      <br>
+      <b-input type="text" placeholder="Eesiniň telfon belgisi"></b-input>
+      <br>
+    </b-container>
+    <b-container class="mt-3 mb-3 blockClass">
+      <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Parantes</h2>
+      <b-input type="text" placeholder="Atasyny ady"></b-input>
+      <br>
+      <b-input type="text" placeholder="Ady"></b-input>
+      <br>
+      <b-input type="text" placeholder="Familýasy"></b-input>
+      <br>
+      <b-input type="text" placeholder="Dogulan ýeri"></b-input>
+      <br>
+      <b-input type="text" placeholder="Ýaşaýan ýeri"></b-input>
+      <br>
+      <b-input type="text" placeholder="Işleýän ýeri"></b-input>
+      <br>
+      <b-input type="text" placeholder="Kazyýet jogapkärçiligine çekilenmi"></b-input>
+      <br>
+    </b-container>
+
+
+
+    <b-container class="mt-3 mb-3 blockClass">
+      <h6 v-for="welayat in welayatlar" :key="welayat.id">{{welayat.name}}</h6>
+
       <br>
     </b-container>
   </div>
@@ -105,7 +165,7 @@ export default {
   async mounted() {
     if(this.welayatlar.length===0){
       await this.loadWelayatlar();
-     // console.log('here');
+      // console.log('here');
     }
   }
 }
@@ -113,8 +173,9 @@ export default {
 
 <style>
 .blockClass {
-  background-color: hsla(0, 0%, 0%, 0.1);
+  background-color: #fff;
   border-radius: 10px;
   padding: 10px;
+  width: 100%;
 }
 </style>
