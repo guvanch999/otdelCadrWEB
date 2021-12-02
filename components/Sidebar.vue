@@ -2,12 +2,11 @@
   <div class="sidebar open" >
     <div class="logo-details">
       <div class="logo_name" style="margin-left:40px">Ishgarler bolumi</div>
-<!--      <i class="bx "  v-bind:class="[isOpened?openclass:closeclass ]" @click="closeSidebar" id="btn"></i>-->
     </div>
     <ul class="nav-list">
       <li v-for="menu in menus" :key="menu.id">
         <nuxt-link class="a" :to="localePath(menu.locale)" :style="menu.selected ?{'background': 'rgba(255, 255, 255, 0.3)' }:{}">
-         <i class="bx bx-grid-alt"></i>
+          <b-icon :icon="menu.icon"   variant="light" style="margin: 10px;width: 25px;height: 25px"/>
           <span class="links_name">{{ menu.name }}</span>
         </nuxt-link>
         <span class="tooltip">{{ menu.name }}</span>
@@ -17,10 +16,11 @@
 </template>
 <script>
 import { mapGetters ,mapActions} from 'vuex';
-
+import {BIconPeopleFill } from 'bootstrap-vue';
 export default {
   name: "Sidebar",
   components:{
+    BIconPeopleFill
 
   },
   data() {
@@ -42,7 +42,6 @@ export default {
 };
 </script>
 <style>
-@import url("https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css");
 * {
   margin: 0;
   padding: 0;
@@ -184,7 +183,7 @@ export default {
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: #11101d;
+  background: transparent;
 }
 .sidebar li .a:hover {
   background: #fff;

@@ -39,6 +39,7 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
     ['nuxt-i18n', {
       locales: [
         {
@@ -63,6 +64,9 @@ export default {
       localStorage: ['cart', 'localStorage']
     }]
   ],
+  bootstrapVue: {
+    icons: true
+  },
   axios: {
     // baseURL: process.env.BASE_URL || 'http://192.168.137.1:8090',
     baseURL: process.env.BASE_URL || 'http://10.102.20.176:8000',

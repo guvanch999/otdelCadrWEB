@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="mt-3 blockClass">
+    <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
       <h2 class="mb-3 mt-3" style="width: 100%;text-align: center;">Add student</h2>
       <b-input v-model="this.addStudentModel.studentID" type="number" placeholder="Talyp belgisi"></b-input>
       <br>
@@ -14,7 +14,7 @@
       <br>
       <b-row>
         <b-col md="6">
-          <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="primary" class="m-2" style="width:100%">
+          <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="primary" class="m-2" style="width:auto">
             <b-dropdown-item v-for="course in couses" :key="course.id">{{ course.name }}</b-dropdown-item>
           </b-dropdown>
         </b-col>
@@ -26,8 +26,8 @@
       </b-row>
       <b-form-file browse-text="Choose Photo" placeholder="Choose photo..." accept="image/jpeg, image/png, image/gif"/>
       <br>
-    </b-container>
-    <b-container class="mt-3 mb-3 blockClass">
+    </div>
+    <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
       <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Third part details!</h2>
       <b-input type="text" placeholder="Yasayan yeri:"></b-input>
       <br>
@@ -67,8 +67,8 @@
       <br>
       <b-input type="text" placeholder="Melisiň agzasymy"></b-input>
       <br>
-    </b-container>
-    <b-container class="mt-3 mb-3 blockClass">
+    </div>
+    <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
       <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Third details</h2>
       <br>
       <b-input type="text" placeholder="Öý salgysy"></b-input>
@@ -81,8 +81,8 @@
       <br>
       <b-input type="text" placeholder="Eesiniň telfon belgisi"></b-input>
       <br>
-    </b-container>
-    <b-container class="mt-3 mb-3 blockClass">
+    </div>
+    <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
       <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Parantes</h2>
       <b-input type="text" placeholder="Atasyny ady"></b-input>
       <br>
@@ -98,15 +98,15 @@
       <br>
       <b-input type="text" placeholder="Kazyýet jogapkärçiligine çekilenmi"></b-input>
       <br>
-    </b-container>
+    </div>
 
 
 
-    <b-container class="mt-3 mb-3 blockClass">
+    <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
       <h6 v-for="welayat in welayatlar" :key="welayat.id">{{welayat.name}}</h6>
 
       <br>
-    </b-container>
+    </div>
   </div>
 </template>
 
@@ -174,8 +174,8 @@ export default {
 <style>
 .blockClass {
   background-color: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  width: 100%;
+  border-radius: 5px;
+  margin-left: 230px;
+  margin-right: 20px;
 }
 </style>
