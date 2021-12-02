@@ -14,12 +14,12 @@
       <br>
       <b-row>
         <b-col md="6">
-          <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="primary" class="m-2" style="width:auto">
+          <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="primary" class="m-2" style="width:80%">
             <b-dropdown-item v-for="course in couses" :key="course.id">{{ course.name }}</b-dropdown-item>
           </b-dropdown>
         </b-col>
         <b-col md="6">
-          <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="primary" class="m-2" style="width:100%">
+          <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="primary" class="m-2" style="width:80%">
             <b-dropdown-item v-for="facultet in facultetler" :key="facultet.id">{{ facultet.nameTM }}</b-dropdown-item>
           </b-dropdown>
         </b-col>
