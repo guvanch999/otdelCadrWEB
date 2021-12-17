@@ -60,7 +60,7 @@ export default {
   transition: all 0.5s ease;
 }
 .sidebar.open {
-  width: 250px;
+  width: 300px;
 }
 .sidebar .logo-details {
   height: 60px;

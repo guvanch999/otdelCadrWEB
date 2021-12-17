@@ -1,14 +1,6 @@
 <template>
   <div class="mainclassfordefoult">
-    <b-row>
-      <b-col md="auto">
-          <Sidebar />
-      </b-col>
-      <b-col>
-        <Header />
-        <nuxt />
-      </b-col>
-    </b-row>
+    <nuxt />
   </div>
 </template>
 
@@ -28,6 +20,7 @@ export default {
 .mainclassfordefoult{
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   background-color: rgba(228, 228, 229, 0.58);
 }
 </style>

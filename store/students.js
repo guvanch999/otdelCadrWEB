@@ -1,6 +1,9 @@
 export const state = () => ({
   studentList: [],
-  studentDetail: {}
+  studentDetail: {},
+  totalCount:0,
+  limit:20,
+  page:0
 })
 
 export const mutations = {
@@ -8,6 +11,9 @@ export const mutations = {
     if (list) {
       state.studentList = list;
     }
+  },
+  setPage(state,page){
+    state.page=page;
   },
   setStudentDetail(state, data) {
     if (data) {
@@ -19,8 +25,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async loadStudentList({commit}) {
-    await this.$axios.$get('/get-student', {}).then((response) => {
+  async loadStudentList({commit},params) {
+    await this.$axios.$get('/get-student', {
+      params:{
+
+      }
+    }).then((response) => {
       commit('setStudentList', response);
     }).catch(err => console.log(err));
   },
@@ -62,11 +72,14 @@ export const actions = {
       console.log(err);
       return false;
     })
-  }
+  },
+
 }
 
 export const getters = {
   getStudentList(state) {
     return state.studentList
   },
+  getPageCount:s=>Math.ceil(s.totalCount/s.limit),
+
 }
