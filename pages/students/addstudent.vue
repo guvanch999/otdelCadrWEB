@@ -1,40 +1,94 @@
 <template>
   <div>
-    <Header/>
+   <div class="headerTypeClass">
+     <h2>Header</h2>
+   </div>
     <b-row>
         <Sidebar/>
         <div style="width: 94%;margin-left: 100px">
           <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
-            <h2 class="mb-3 mt-3" style="width: 100%;text-align: center;">Add student</h2>
-            <b-input v-model="this.addStudentModel.studentID" type="number" placeholder="Talyp belgisi"></b-input>
-            <br>
-            <b-input v-model="this.addStudentModel.fatherName" type="text" placeholder="Atasynyň ady"></b-input>
-            <br>
-            <b-input v-model="this.addStudentModel.name" type="text" placeholder="Ady"></b-input>
-            <br>
-            <b-input v-model="this.addStudentModel.surname" type="text" placeholder="Familiýasy"></b-input>
-            <br>
-            <b-input v-model="this.addStudentModel.klass" type="text" placeholder="Topar nomeri"></b-input>
-            <br>
             <b-row>
-              <b-col md="6">
-                <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="primary" class="m-2" style="width:80%">
-                  <b-dropdown-item v-for="course in couses" :key="course.id">{{ course.name }}</b-dropdown-item>
-                </b-dropdown>
+              <b-col md="2">
+                <b-button class="singinbuttonstyle" >
+                  <BIconArrowLeft /> Yza
+                </b-button>
               </b-col>
               <b-col md="6">
-                <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="primary" class="m-2"
-                            style="width:80%">
-                  <b-dropdown-item v-for="facultet in facultetler" :key="facultet.id">{{
-                      facultet.nameTM
-                    }}
-                  </b-dropdown-item>
-                </b-dropdown>
+              </b-col>
+              <b-col md="4">
+                <b-row>
+                 <BIconPersonCircle variant="default" style="height: 45px;width: 45px;opacity: 0.8"/>
+                  <div style="margin-left: 10px">
+                    <h5>Surname Name</h5>
+                    <h6>Job position</h6>
+                  </div>
+                </b-row>
               </b-col>
             </b-row>
-            <b-form-file browse-text="Choose Photo" placeholder="Choose photo..."
-                         accept="image/jpeg, image/png, image/gif"/>
-            <br>
+            <hr>
+            <b-row>
+              <b-col md="6">
+                <b-row>
+                  <b-col md="4">
+                      <img src="#"  width="90%" height="140" style="background-color: darkgrey;margin-left: 5%;margin-right: 5%"/>
+<!--                    <b-button  class="singinbuttonstyle"  > Add photo</b-button>-->
+                    <b-form-file class="singinbuttonstyle" browse-text="Choose Photo" placeholder="Choose photo..."
+                                 accept="image/jpeg, image/png, image/gif"/>
+                  </b-col>
+                  <b-col md="8">
+                    <b-input class="inputClasss" style="margin-top:10px" v-model="this.addStudentModel.fatherName" type="text" placeholder="Atasynyň ady"></b-input>
+                    <b-input class="inputClasss" v-model="this.addStudentModel.name" type="text" placeholder="Ady"></b-input>
+                    <b-input class="inputClasss" v-model="this.addStudentModel.surname" type="text" placeholder="Familiýasy"></b-input>
+                  </b-col>
+                </b-row>
+              </b-col>
+              <b-col md="6">
+                  <b-row style="margin-top: 10px">
+                    <b-col md="4">
+                      <h6 style="margin-top: 5px">Talyp belgi:</h6>
+                    </b-col>
+                    <b-col md="8">
+                      <b-input v-model="this.addStudentModel.studentID" type="number" placeholder="Talyp belgisi"></b-input>
+                    </b-col>
+                  </b-row>
+                <b-row style="margin-top: 10px">
+                  <b-col md="4">
+                    <h6 style="margin-top: 5px">Topar nomeri:</h6>
+                  </b-col>
+                  <b-col md="8">
+                    <b-input v-model="this.addStudentModel.klass" type="text" placeholder="Topar nomeri"></b-input>
+                  </b-col>
+                </b-row>
+                <b-row style="margin-top: 10px">
+                  <b-col md="4">
+                    <h6 style="margin-top: 5px">Kursuny saylan:</h6>
+                  </b-col>
+                  <b-col md="8">
+                    <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="outline-primary" style="width:100%">
+                      <b-dropdown-item v-for="course in couses" :key="course.id">{{ course.name }}</b-dropdown-item>
+                    </b-dropdown>
+                  </b-col>
+                </b-row>
+                <b-row style="margin-top: 10px">
+                  <b-col md="4">
+                    <h6 style="margin-top: 5px">Facultet Saylan:</h6>
+                  </b-col>
+                  <b-col md="8">
+                    <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="outline-primary" style="width:100%">
+                      <b-dropdown-item v-for="facultet in facultetler" :key="facultet.id">{{
+                          facultet.nameTM
+                        }}
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </b-col>
+                </b-row>
+
+              </b-col>
+            </b-row>
+            <hr>
+
+
+
           </div>
           <div class="mt-3 pl-3 pr-3 pb-3 pt-3 blockClass">
             <h2 class="mb-3 mt-3" style="width: 100%; text-align: center">Third part details!</h2>
@@ -193,5 +247,26 @@ export default {
   border-radius: 5px;
   margin-left: 230px;
   margin-right: 20px;
+}
+.headerTypeClass{
+  margin-left: 330px;
+  padding-top: 20px;
+}
+.singinbuttonstyle{
+  background-color:#0762C8;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.singinbuttonstyle:hover{
+  background-color: #0e88fd;
+}
+.inputClasss{
+
+  border: 1px solid #0762C8;
+  box-sizing: border-box;
+  border-radius: 3px;
+  margin-bottom: 15px;
 }
 </style>
