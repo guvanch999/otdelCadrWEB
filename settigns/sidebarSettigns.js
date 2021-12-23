@@ -7,14 +7,14 @@ export const sidebarArray = [
     icon:"people-fill"
   },
   {
-    id: 1,
+    id: 2,
     name: "Talypary gormek",
     locale: "/students/allstudents",
     selected: false,
     icon:"people-fill"
   },
   {
-    id: 1,
+    id: 3,
     name: "Dashboard",
     locale: "/students/addstudent",
     selected: false,

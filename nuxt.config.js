@@ -68,8 +68,6 @@ export default {
     icons: true
   },
   axios: {
-    // baseURL: process.env.BASE_URL || 'http://192.168.137.1:8090',
-    //uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     baseURL: process.env.BASE_URL || 'http://10.1.5.111:8000',
     proxyHeaders: false,
     credentials: false
