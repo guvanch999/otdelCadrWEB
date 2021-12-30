@@ -14,10 +14,10 @@
           <h3
             class="loginINText">Log in</h3>
           <b-input v-model="loginProps.username" type="text" placeholder="Username"
-                   class="inputclass mb-3" />
+                   class="inputclass mb-3"/>
           <b-input v-model="loginProps.password" type="password" placeholder="Password"
                    class="inputclass"/>
-          <b-button class="singinbuttonstyle">Iceri gir
+          <b-button @click="handleLogin" class="singinbuttonstyle">Iceri gir
           </b-button>
         </b-col>
       </b-row>
@@ -25,6 +25,8 @@
   </div>
 </template>
 <script>
+import {mapActions, mapGetters} from "vuex";
+
 export default {
   data() {
     return {
@@ -35,12 +37,25 @@ export default {
     }
   },
   methods: {
-    handleLogin(event) {
+    ...mapActions({
+      loginFunction: 'liginAction'
+    }),
+    async handleLogin(event) {
       event.preventDefault()
       console.log(this.loginProps)
+      await this.loginFunction(this.loginProps);
+      if (this.userToken) {
+        this.$router.push('/students/addstudent');
+      } else {
+        alert('Bir zat nadogry');
+      }
     }
+  },
+  computed: {
+    ...mapGetters({
+      userToken: 'getUserToken'
+    })
   }
-
 }
 </script>
 
@@ -77,7 +92,8 @@ export default {
   text-align: center;
   color: #FFFFFF;
 }
-.loginINText{
+
+.loginINText {
   font-family: Rubik;
   font-style: normal;
   font-weight: 500;
@@ -87,18 +103,21 @@ export default {
   margin-top: 20px;
   margin-bottom: 10px;
 }
-.inputclass{
+
+.inputclass {
   width: 80%;
   background: #F2F3F5;
   border-radius: 8px;
 }
-.singinbuttonstyle{
-  background-color:#0762C8;
+
+.singinbuttonstyle {
+  background-color: #0762C8;
   padding-left: 25px;
   padding-right: 25px;
   margin-top: 20px
 }
-.singinbuttonstyle:hover{
+
+.singinbuttonstyle:hover {
   background-color: #0e88fd;
 }
 </style>
