@@ -35,8 +35,9 @@ export const actions = {
     }).catch(err => console.log(err));
   },
   async addStudent({commit}, data) {
-    await this.$axios.$post('/add-student', data).then(
+    return  await this.$axios.$post('/add-student', data).then(
       response => {
+        console.log(response)
         if (response) {
           return true;
         } else return false;
@@ -59,8 +60,23 @@ export const actions = {
       commit('setStudentDetail', {});
     })
   },
+  async addStudentImage({commit},data){
+    return await this.$axios.$put('/upload-image',data.form,{
+      params:{
+        id:data.studentID
+      }
+    }).then((response)=>{
+      if(!response.error){
+        console.log("image  requetst is: " +response);
+        return true;
+      } else return false;
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
+  },
   async addStudentDetail({commit},data){
-    await this.$axios.$post('/add-student-detail',data).then(
+    return  await this.$axios.$post('/add-student-detail',data).then(
       (response)=>{
         if(response){
           return true;

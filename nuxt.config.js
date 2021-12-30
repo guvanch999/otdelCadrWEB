@@ -22,7 +22,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/axios'
+    '~/plugins/axios',
+    '~plugins/vuelidate',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -68,7 +69,7 @@ export default {
     icons: true
   },
   axios: {
-    baseURL: process.env.BASE_URL || 'http://10.1.5.111:8000',
+    baseURL:process.env.BASE_URL || 'http://217.174.233.210:8000',
     proxyHeaders: false,
     credentials: false
     // debug: true
