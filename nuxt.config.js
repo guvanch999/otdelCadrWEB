@@ -24,6 +24,7 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~plugins/vuelidate',
+    '~plugins/customValidators.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

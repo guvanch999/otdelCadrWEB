@@ -2,7 +2,8 @@ import {sidebarArray} from "~/settigns/sidebarSettigns";
 
 export const state = () => ({
   sidebarMenus: sidebarArray,
-  token: null
+  token: null,
+  returnPath:''
 })
 
 export const mutations = {
@@ -12,8 +13,10 @@ export const mutations = {
   },
   setToken(state, token) {
       state.token = token;
-
-  }
+  },
+  setReturnPath(state,path){
+    state.returnPath=path;
+}
 }
 
 export const actions = {
@@ -30,5 +33,7 @@ export const actions = {
 
 export const getters = {
   getSidebarArray: s => s.sidebarMenus,
-  getUserToken: s => s.token
+  getUserToken: s => s.token,
+  isAuthenticated:s=>s.token,
+  getReturnPath:s=>s.returnPath
 }

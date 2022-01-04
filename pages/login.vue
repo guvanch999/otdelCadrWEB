@@ -28,6 +28,7 @@
 import {mapActions, mapGetters} from "vuex";
 
 export default {
+  middleware:['auth'],
   data() {
     return {
       loginProps: {
@@ -42,10 +43,10 @@ export default {
     }),
     async handleLogin(event) {
       event.preventDefault()
-      console.log(this.loginProps)
       await this.loginFunction(this.loginProps);
       if (this.userToken) {
-        this.$router.push('/students/addstudent');
+        let returnTo=this.returnPath!=='/login'?this.returnPath:'/students/addstudent';
+        this.$router.push(returnTo);
       } else {
         alert('Bir zat nadogry');
       }
@@ -53,7 +54,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userToken: 'getUserToken'
+      userToken: 'getUserToken',
+      returnPath:'getReturnPath'
     })
   }
 }

@@ -6,6 +6,9 @@
 
 <script>
 export default {
-
+middleware:['auth'],
+  mounted() {
+  this.$router.push('/students/addstudent');
+  }
 }
 </script>

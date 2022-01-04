@@ -45,24 +45,30 @@
                 </b-col>
                 <b-col md="8">
                   <b-input class="inputClasss" style="margin-top:10px" v-model="addStudentModel.fatherName"
+                           :state="validateFunctions('requiderValidator',addStudentModel.fatherName)"
                            type="text" placeholder="Atasynyň ady"></b-input>
                   <b-input class="inputClasss" v-model="addStudentModel.name" type="text"
+                           :state="validateFunctions('requiderValidator',addStudentModel.name)"
                            placeholder="Ady"></b-input>
                   <b-input class="inputClasss" v-model="addStudentModel.surname" type="text"
+                           :state="validateFunctions('requiderValidator',addStudentModel.surname)"
                            placeholder="Familiýasy"></b-input>
                 </b-col>
               </b-row>
             </b-col>
-<!--
-a.niyazow 124A 31
--->
+            <!--
+            a.niyazow 124A 31
+            -->
             <b-col md="6" style="min-width: 500px">
               <b-row style="margin-top: 10px">
                 <b-col md="4">
                   <h6 style="margin-top: 5px">Talyp belgi:</h6>
                 </b-col>
                 <b-col md="8">
-                  <b-input v-model="addStudentModel.studentID" type="number" placeholder="Talyp belgisi"></b-input>
+                  <b-input v-model="addStudentModel.studentID"
+                           type="number"
+                           :state="validateFunctions('studentNumberValidator',addStudentModel.studentID)"
+                           placeholder="Talyp belgisi"></b-input>
                 </b-col>
               </b-row>
               <b-row style="margin-top: 10px">
@@ -70,15 +76,18 @@ a.niyazow 124A 31
                   <h6 style="margin-top: 5px">Topar nomeri:</h6>
                 </b-col>
                 <b-col md="8">
-                  <b-input v-model="addStudentModel.klass" type="text" placeholder="Topar nomeri"></b-input>
+                  <b-input v-model="addStudentModel.klass"
+                           type="number"
+                           :state="validateFunctions('klassValidator',addStudentModel.klass)"
+                           placeholder="Topar nomeri"></b-input>
                 </b-col>
               </b-row>
               <b-row style="margin-top: 10px">
                 <b-col md="4">
-                  <h6 style="margin-top: 5px">Kursuny saylan:</h6>
+                  <h6 style="margin-top: 5px">Kursuny saylaň:</h6>
                 </b-col>
                 <b-col md="8">
-                  <b-dropdown id="dropdown-left" text="Kursuny saýlaň" variant="outline-primary" style="width:100%">
+                  <b-dropdown id="dropdown-left"  text="Kursuny saýlaň" variant="outline-primary" style="width:100%">
                     <b-dropdown-item v-for="course in couses" :key="course.id" @click="selectCourse(course.id)">
                       {{ course.name }}
                     </b-dropdown-item>
@@ -87,7 +96,7 @@ a.niyazow 124A 31
               </b-row>
               <b-row style="margin-top: 10px">
                 <b-col md="4">
-                  <h6 style="margin-top: 5px">Facultet Saylan:</h6>
+                  <h6 style="margin-top: 5px">Fakultet saýlaň:</h6>
                 </b-col>
                 <b-col md="8">
                   <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="outline-primary" style="width:100%">
@@ -107,10 +116,13 @@ a.niyazow 124A 31
               <b-col md="6" style="min-width: 500px">
                 <b-row style="margin-top: 15px">
                   <b-col md="4">
-                    <h6 style="margin-top: 5px">Yashayan yeri:</h6>
+                    <h6 style="margin-top: 5px">Ýaşaýan ýeri </h6>
+                    <h6>(Ýazgyda duran ýeri):</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" v-model="studentDetailModel.yashayanYeri" placeholder="Ýaşaýan ýeri"></b-input>
+                    <b-form-textarea type="text" v-model="studentDetailModel.yashayanYeri"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.yashayanYeri)"
+                             placeholder="Ýaşaýan ýeri"></b-form-textarea>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -118,7 +130,9 @@ a.niyazow 124A 31
                     <h6 style="margin-top: 5px">Milleti:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" v-model="studentDetailModel.milleti" placeholder="Milleti:"></b-input>
+                    <b-input type="text" v-model="studentDetailModel.milleti"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.milleti)"
+                             placeholder="Milleti:"></b-input>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -140,6 +154,7 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="date" v-model="studentDetailModel.doglanSenesi"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.doglanSenesi)"
                              placeholder="Doglan senesi:"></b-input>
                   </b-col>
                 </b-row>
@@ -149,16 +164,18 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.hunar"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.hunar)"
                              placeholder="Bilimi boýunça hünäri"></b-input>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
                   <b-col md="4">
-                    <h6 style="margin-top: 5px">Alymlyk dereesi:</h6>
+                    <h6 style="margin-top: 5px">Alymlyk derejesi:</h6>
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.alymlykDereje"
-                             placeholder="Alymlyk dereesi"></b-input>
+                             :state="validateFunctions('requiderValidator',studentDetailModel.alymlykDereje)"
+                             placeholder="Alymlyk derejesi"></b-input>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -167,6 +184,7 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.dasYurtBolm"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.dasYurtBolm)"
                              placeholder="Daşary ýurtda bolmagy"></b-input>
                   </b-col>
                 </b-row>
@@ -177,7 +195,9 @@ a.niyazow 124A 31
                     <h6 style="margin-top: 5px">Häzirki ýaşaýan ýeri:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-form-textarea type="text" v-model="studentDetailModel.hYashayanYeri" placeholder="Häzirki ýaşaýan ýeri" ></b-form-textarea>
+                    <b-form-textarea type="text" v-model="studentDetailModel.hYashayanYeri"
+                                     :state="validateFunctions('requiderValidator',studentDetailModel.hYashayanYeri)"
+                                     placeholder="Häzirki ýaşaýan ýeri"></b-form-textarea>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -186,7 +206,8 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-form-textarea type="text" v-model="studentDetailModel.tamamlanMek"
-                             placeholder="Tamamlan mekdebi:"></b-form-textarea>
+                                     :state="validateFunctions('requiderValidator',studentDetailModel.tamamlanMek)"
+                                     placeholder="Tamamlan mekdebi:"></b-form-textarea>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -194,7 +215,9 @@ a.niyazow 124A 31
                     <h6 style="margin-top: 5px">Doglan yeri:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" v-model="studentDetailModel.doglanYeri" placeholder="Doglan yeri:"></b-input>
+                    <b-input type="text" v-model="studentDetailModel.doglanYeri"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.doglanYeri)"
+                             placeholder="Doglan yeri:"></b-input>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -203,6 +226,7 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.bilyanDilleri"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.bilyanDilleri)"
                              placeholder="Bilýän dilleri:"></b-input>
                   </b-col>
                 </b-row>
@@ -214,6 +238,7 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.partiyaAgzasy"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.partiyaAgzasy)"
                              placeholder="Partiýa agazasy:"></b-input>
                   </b-col>
                 </b-row>
@@ -224,6 +249,7 @@ a.niyazow 124A 31
                   </b-col>
                   <b-col md="8">
                     <b-input type="text" v-model="studentDetailModel.mejlisAgzasy"
+                             :state="validateFunctions('requiderValidator',studentDetailModel.mejlisAgzasy)"
                              placeholder="Melisiň agzasymy:"></b-input>
                   </b-col>
                 </b-row>
@@ -237,7 +263,7 @@ a.niyazow 124A 31
                     <h6 style="margin-top: 5px">Öý telfony:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" placeholder="Öý telfony"></b-input>
+                    <b-input type="text"       placeholder="Öý telfony"></b-input>
                   </b-col>
                 </b-row>
                 <b-row style="margin-top: 15px">
@@ -275,20 +301,20 @@ a.niyazow 124A 31
               <b-col md="6" style="min-width: 500px">
                 <b-row style="margin-top: 15px">
                   <b-col md="4">
-                    <h6 style="margin-top: 5px">Islan yeri:</h6>
+                    <h6 style="margin-top: 5px">Işlän ýeri:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" placeholder="Islan yeri"></b-input>
+                    <b-input type="text" placeholder="Işlän ýeri"></b-input>
                   </b-col>
                 </b-row>
               </b-col>
               <b-col md="6" style="min-width: 500px">
                 <b-row style="margin-top: 15px">
                   <b-col md="4">
-                    <h6 style="margin-top: 5px">Islan wagty:</h6>
+                    <h6 style="margin-top: 5px">Işlän wagty:</h6>
                   </b-col>
                   <b-col md="8">
-                    <b-input type="text" placeholder="Islan wagty"></b-input>
+                    <b-input type="text" placeholder="Işlän wagty"></b-input>
                   </b-col>
                 </b-row>
               </b-col>
@@ -297,36 +323,36 @@ a.niyazow 124A 31
             <table>
               <thead>
               <th>
-                Ishlan yeri
+                Işlän ýeri
               </th>
               <th>
-                Islan wagty
+                Işlän wagty
               </th>
               <th width="160">
-                Funksiyalar
+                Funksiýalar
               </th>
               </thead>
               <tbody>
               <tr>
                 <td>
-                  <b-input type="text" class="inputClasss" placeholder="Gozleg"/>
+                  <b-input type="text" class="inputClasss" placeholder="Gözleg"/>
                 </td>
                 <td>
-                  <b-input type="text" class="inputClasss" placeholder="Gozleg"/>
+                  <b-input type="text" class="inputClasss" placeholder="Gözleg"/>
                 </td>
                 <td>#</td>
               </tr>
               <tr>
                 <td>
-                  <b-textarea type="text" class="inputClasss" placeholder="Islan yeri"/>
+                  <b-textarea type="text" class="inputClasss" placeholder="Işlän ýeri"/>
                 </td>
                 <td>
-                  <b-input type="text" class="inputClasss" placeholder="Ishlan wagty"/>
+                  <b-input type="text" class="inputClasss" placeholder="Işlän wagty"/>
                 </td>
                 <td>
                   <div style="text-align: center">
-                    <b-button variant="success" style="margin-right: 10px">Save</b-button>
-                    <b-button variant="outline-danger">
+                    <b-button variant="success" style="width: 80%;margin-bottom: 10px">Ýatda sakla</b-button>
+                    <b-button variant="outline-danger" style="width: 80%">
                       <BIconX/>
                     </b-button>
                   </div>
@@ -366,8 +392,8 @@ a.niyazow 124A 31
                   <b-input type="date" class="inputClasss"/>
                 </td>
                 <td>
-                  <b-dropdown class="inputClasss" style="width: 90%" text="Yok" variant="light">
-                    <b-dropdown-item>Ýok</b-dropdown-item>
+                  <b-dropdown class="inputClasss" style="width: 90%" variant="light">
+                    <b-dropdown-item selected="true" >Ýok</b-dropdown-item>
                   </b-dropdown>
                 </td>
               </tr>
@@ -404,7 +430,7 @@ a.niyazow 124A 31
             <hr>
           </div>
           <div style="text-align: center;margin-top: 10px">
-            <b-button variant="primary" @click="createStudent">Yatda sakla</b-button>
+            <b-button variant="primary" @click="createStudent">Ýatda sakla</b-button>
           </div>
         </div>
       </div>
@@ -419,6 +445,7 @@ import Header from "~/components/Header";
 import Sidebar from "~/components/Sidebar";
 
 export default {
+  middleware:['auth'],
   components: {
     Sidebar,
     Header,
@@ -448,12 +475,12 @@ export default {
         tamamlanMek: "",
         bilyanDilleri: "",
         hunar: "",
-        alymlykDereje: "Yok",
+        alymlykDereje: "Ýok",
         bilimi: "",
-        partiyaAgzasy: "Yok",
-        dasYurtBolm: "Yok",
-        mejlisAgzasy: "Yok",
-        hYashayanYeri:''
+        partiyaAgzasy: "Ýok",
+        dasYurtBolm: "Ýok",
+        mejlisAgzasy: "Ýok",
+        hYashayanYeri: ''
       },
       isStudentAdded: false,
     }
@@ -469,13 +496,10 @@ export default {
     }),
     mainimagechanged() {
       this.image = this.$refs.mainfile.files[0];
-      console.log(this.image);
       this.imageUrl = URL.createObjectURL(this.image);
-      // console.log(this.image);
     },
 
     async createStudent() {
-      console.log(this.addStudentModel);
       if (
         this.addStudentModel.course === "" ||
         this.addStudentModel.klass === "" ||
@@ -528,11 +552,11 @@ export default {
           tamamlanMek: "",
           bilyanDilleri: "",
           hunar: "",
-          alymlykDereje: "Yok",
+          alymlykDereje: "Ýok",
           bilimi: "",
-          partiyaAgzasy: "Yok",
-          dasYurtBolm: "Yok",
-          mejlisAgzasy: "Yok"
+          partiyaAgzasy: "Ýok",
+          dasYurtBolm: "Ýok",
+          mejlisAgzasy: "Ýok"
         };
         this.addStudentModel.studentID = 0
       }
@@ -546,7 +570,12 @@ export default {
     },
     selectGirenYeri(index) {
       this.studentDetailModel.okuwaGirenYID = index;
-    }
+    },
+    validateFunctions(name,value) {
+      const validators=this.$customValidators;
+
+      return  validators[name](value);
+    },
   },
   computed: {
     ...mapGetters({
@@ -555,6 +584,7 @@ export default {
       couses: 'courses/getCourses'
     })
   },
+
   async mounted() {
     if (this.welayatlar.length === 0) {
       await this.loadWelayatlar();
