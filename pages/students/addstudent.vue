@@ -29,12 +29,17 @@
           <hr>
             <StudentMainForm />
           <hr>
-          <div v-if="!isStudentAdded">
+          <div >
               <FullDetailForm />
           </div>
-          <div v-else>
+          <div >
             <hr>
             <AddParentsForm />
+            <hr>
+          </div>
+          <div >
+            <hr>
+            <OptionalDetails />
             <hr>
           </div>
           <div style="text-align: center;margin-top: 10px">
@@ -54,6 +59,7 @@ import Sidebar from "~/components/Sidebar";
 import StudentMainForm from "~/components/students/addstudent/StudentMainForm";
 import FullDetailForm from "~/components/students/addstudent/FullDetailForm";
 import AddParentsForm from "~/components/students/addstudent/AddParentsForm";
+import OptionalDetails from "~/components/students/addstudent/OptionalDetails";
 export default {
   middleware:['auth'],
   components: {
@@ -62,7 +68,8 @@ export default {
     PreviewPopup,
     StudentMainForm,
     FullDetailForm,
-    AddParentsForm
+    AddParentsForm,
+    OptionalDetails
   },
   data() {
     return {
