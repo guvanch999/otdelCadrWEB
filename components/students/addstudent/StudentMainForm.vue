@@ -1,69 +1,92 @@
 <template>
-  <div>
-    <div class="headerTypeClass">
-      <h2>Header</h2>
-    </div>
-    <b-row>
-      <Sidebar/>
-      <div style="width: 94%;margin-left: 100px">
-        <div class="mt-3 pl-3 pr-5 pb-3 pt-3 blockClass ">
-          <b-row>
-            <b-col md="2" style="min-width: 150px">
-              <b-button class="singinbuttonstyle">
-                <BIconArrowLeft/>
-                Yza
-              </b-button>
-            </b-col>
-            <b-col md="8">
-              <b-row style="float: right;margin-right: 10px;">
-                <div style="display: flex;">
-                  <BIconPersonCircle variant="default" style="height: 45px;width: 45px;opacity: 0.8"/>
-                  <div style="margin-left: 10px">
-                    <h5>Surname Name</h5>
-                    <h6>Job position</h6>
-                  </div>
-                </div>
-              </b-row>
-            </b-col>
-          </b-row>
-          <hr>
-            <StudentMainForm />
-          <hr>
-          <div v-if="!isStudentAdded">
-              <FullDetailForm />
+  <b-row style="margin-left: 2px">
+    <b-col md="6" style="min-width: 500px">
+      <b-row>
+        <b-col md="4" style="width: 100px">
+          <div style="text-align: center">
+            <img :src="imageUrl" width="120" height="140"
+                 style="background-color: darkgrey;margin-left: 5%;margin-right: 5%"/>
+            <input
+              type="file"
+              ref="mainfile"
+              style="margin-top: 10px;width: 120px;margin-left: 5%;margin-right: 5%"
+              @change="mainimagechanged"
+              accept="image/jpeg, image/png, image/gif"
+            />
           </div>
-          <div v-else>
-            <hr>
-            <AddParentsForm />
-            <hr>
-          </div>
-          <div style="text-align: center;margin-top: 10px">
-            <b-button variant="primary" @click="createStudent">Ýatda sakla</b-button>
-          </div>
-        </div>
-      </div>
-    </b-row>
-  </div>
+        </b-col>
+        <b-col md="8">
+          <b-input class="inputClasss" style="margin-top:10px" v-model="addStudentModel.fatherName"
+                   :state="validateFunctions('requiderValidator',addStudentModel.fatherName)"
+                   type="text" placeholder="Atasynyň ady"></b-input>
+          <b-input class="inputClasss" v-model="addStudentModel.name" type="text"
+                   :state="validateFunctions('requiderValidator',addStudentModel.name)"
+                   placeholder="Ady"></b-input>
+          <b-input class="inputClasss" v-model="addStudentModel.surname" type="text"
+                   :state="validateFunctions('requiderValidator',addStudentModel.surname)"
+                   placeholder="Familiýasy"></b-input>
+        </b-col>
+      </b-row>
+    </b-col>
+    <!--
+    a.niyazow 124A 31
+    -->
+    <b-col md="6" style="min-width: 500px">
+      <b-row style="margin-top: 10px">
+        <b-col md="4">
+          <h6 style="margin-top: 5px">Talyp belgi:</h6>
+        </b-col>
+        <b-col md="8">
+          <b-input v-model="addStudentModel.studentID"
+                   type="number"
+                   :state="validateFunctions('studentNumberValidator',addStudentModel.studentID)"
+                   placeholder="Talyp belgisi"></b-input>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top: 10px">
+        <b-col md="4">
+          <h6 style="margin-top: 5px">Topar nomeri:</h6>
+        </b-col>
+        <b-col md="8">
+          <b-input v-model="addStudentModel.klass"
+                   type="number"
+                   :state="validateFunctions('klassValidator',addStudentModel.klass)"
+                   placeholder="Topar nomeri"></b-input>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top: 10px">
+        <b-col md="4">
+          <h6 style="margin-top: 5px">Kursuny saylaň:</h6>
+        </b-col>
+        <b-col md="8">
+          <b-dropdown id="dropdown-left"  text="Kursuny saýlaň" variant="outline-primary" style="width:100%">
+            <b-dropdown-item v-for="course in couses" :key="course.id" @click="selectCourse(course.id)">
+              {{ course.name }}
+            </b-dropdown-item>
+          </b-dropdown>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top: 10px">
+        <b-col md="4">
+          <h6 style="margin-top: 5px">Fakultet saýlaň:</h6>
+        </b-col>
+        <b-col md="8">
+          <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="outline-primary" style="width:100%">
+            <b-dropdown-item v-for="facultet in facultetler" :key="facultet.id"
+                             @click="selectFaculty(facultet.id)">{{
+                facultet.nameTM
+              }}
+            </b-dropdown-item>
+          </b-dropdown>
+        </b-col>
+      </b-row>
+    </b-col>
+  </b-row>
 </template>
-
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import PreviewPopup from "~/components/students/PreviewPopup";
-import Header from "~/components/Header";
-import Sidebar from "~/components/Sidebar";
-import StudentMainForm from "~/components/students/addstudent/StudentMainForm";
-import FullDetailForm from "~/components/students/addstudent/FullDetailForm";
-import AddParentsForm from "~/components/students/addstudent/AddParentsForm";
+import {mapActions, mapGetters} from "vuex";
+
 export default {
-  middleware:['auth'],
-  components: {
-    Sidebar,
-    Header,
-    PreviewPopup,
-    StudentMainForm,
-    FullDetailForm,
-    AddParentsForm
-  },
   data() {
     return {
       addStudentModel: {
@@ -77,25 +100,6 @@ export default {
       },
       image: null,
       imageUrl: null,
-      studentDetailModel: {
-        yashayanYeri: "",
-        okuwaGirenYeri: 0,
-        okuwaGirenYID: 0,
-        studentID: 0,
-        doglanSenesi: "",
-        doglanYeri: "",
-        milleti: "Turkmen",
-        tamamlanMek: "",
-        bilyanDilleri: "",
-        hunar: "",
-        alymlykDereje: "Ýok",
-        bilimi: "",
-        partiyaAgzasy: "Ýok",
-        dasYurtBolm: "Ýok",
-        mejlisAgzasy: "Ýok",
-        hYashayanYeri: ''
-      },
-      isStudentAdded: false,
     }
   },
   methods: {
@@ -201,46 +205,10 @@ export default {
   async mounted() {
     if (this.welayatlar.length === 0) {
       await this.loadWelayatlar();
-      // console.log('here');
     }
   }
 }
 </script>
-
-<style>
-.blockClass {
-  background-color: #fff;
-  border-radius: 5px;
-  margin-left: 230px;
-  margin-right: 20px;
-}
-
-.headerTypeClass {
-  margin-left: 330px;
-  padding-top: 20px;
-}
-
-.singinbuttonstyle {
-  background-color: #0762C8;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.singinbuttonstyle:hover {
-  background-color: #0e88fd;
-}
-
-.inputClasss {
-
-  border: 1px solid #0762C8;
-  box-sizing: border-box;
-  border-radius: 3px;
-  margin-bottom: 15px;
-}
-</style>
-
 <style scoped>
 
 table {

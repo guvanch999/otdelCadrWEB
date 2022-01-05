@@ -1,5 +1,5 @@
 import {sidebarArray} from "~/settigns/sidebarSettigns";
-
+import Cookie from 'js-cookie'
 export const state = () => ({
   sidebarMenus: sidebarArray,
   token: null,
@@ -13,6 +13,8 @@ export const mutations = {
   },
   setToken(state, token) {
       state.token = token;
+      console.log(token);
+      Cookie.set('mainToken',token);
   },
   setReturnPath(state,path){
     state.returnPath=path;

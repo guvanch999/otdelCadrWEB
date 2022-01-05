@@ -46,6 +46,8 @@ export default {
       await this.loginFunction(this.loginProps);
       if (this.userToken) {
         let returnTo=this.returnPath!=='/login'?this.returnPath:'/students/addstudent';
+        returnTo=returnTo!==''?returnTo:'/students/addstudent'
+        console.log(returnTo)
         this.$router.push(returnTo);
       } else {
         alert('Bir zat nadogry');
