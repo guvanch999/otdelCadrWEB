@@ -101,7 +101,9 @@
           </div>
         </div>
       </div>
+      <vue-ellipse-progress :progress="40" />
     </b-row>
+
   </div>
 </template>
 
@@ -112,7 +114,11 @@ import Header from '~/components/Header'
 import Sidebar from '~/components/Sidebar'
 
 export default {
-  components: { Sidebar, Header, PreviewPopup },
+  components: {
+    Sidebar,
+    Header,
+    PreviewPopup
+     },
   data () {
     return {
       addStudentModel: {
