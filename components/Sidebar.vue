@@ -54,7 +54,7 @@ export default {
   top: 0;
   height: 100%;
   width: 100px;
-  background: #0e88fd;
+  background: #0762C8;
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;

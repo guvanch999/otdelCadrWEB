@@ -1,11 +1,28 @@
+import {popParams} from "vuelidate/lib/params";
+
 export const state = () => ({
-  parentStatuses:[]
+  parentStatuses:[],
+  parents:[]
 })
 
 export const mutations = {
   setParentStatuses(state,list){
     if(list){
       state.parentStatuses=list;
+    } else {
+      state.parentStatuses=[]
+    }
+  },
+  setParents(state,list){
+    if(list){
+      state.parents=list;
+    } else {
+      state.parents=[]
+    }
+  },
+  pushParent(st,data){
+    if(data){
+      st.parents.push(data);
     }
   }
 }
@@ -14,14 +31,25 @@ export const actions = {
   async loadParentStatuses({commit}){
     await this.$axios.$get('/get-parent-status',{
     }).then((response)=>{
-      commit('setParentStatuses',response);
-    }).catch(err=>console.log(err));
+      if(response && !response.error){
+        commit('setParentStatuses',response.body);
+      } else commit('setParentStatuses',[]);
+    }).catch(err=>{
+      console.log(err)
+      commit('setParentStatuses',[]);
+    });
   },
   async addStudentParent({commit},data){
     await this.$axios.$post('/add-parent',data).then(
       response=>{
         if(response){
-          return true;
+          if(response && !response.error){
+            data.id=response.id;
+            commit('pushParent',data);
+            return true;
+          } else {
+            return false;
+          }
         } else
           return  false;
       }
@@ -29,11 +57,27 @@ export const actions = {
       console.log(err);
       return false;
     })
+  },
+  async loadParents({commit},id){
+    await this.$axios.$get('/get-parent',{
+      params:{
+        studentID:id
+      }
+    }).then(response=>{
+      if(response && !response.error){
+        commit('setParents',response.body);
+      }
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
   }
+
 }
 
 export const getters = {
   getParentStatus(state) {
     return state.parentStatuses
   },
+  getParents:s=>s.parents
 }

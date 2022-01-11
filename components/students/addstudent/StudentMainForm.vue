@@ -1,4 +1,5 @@
 <template>
+  <div>
   <b-row style="margin-left: 2px">
     <b-col md="6" style="min-width: 500px">
       <b-row>
@@ -9,6 +10,7 @@
             <input
               type="file"
               ref="mainfile"
+              v-if="!isAdded"
               style="margin-top: 10px;width: 120px;margin-left: 5%;margin-right: 5%"
               @change="mainimagechanged"
               accept="image/jpeg, image/png, image/gif"
@@ -16,13 +18,13 @@
           </div>
         </b-col>
         <b-col md="8">
-          <b-input class="inputClasss" style="margin-top:10px" v-model="addStudentModel.fatherName"
+          <b-input :disabled="isAdded" class="inputClasss" style="margin-top:10px" v-model="addStudentModel.fatherName"
                    :state="validateFunctions('requiderValidator',addStudentModel.fatherName)"
                    type="text" placeholder="Atasynyň ady"></b-input>
-          <b-input class="inputClasss" v-model="addStudentModel.name" type="text"
+          <b-input :disabled="isAdded" class="inputClasss" v-model="addStudentModel.name" type="text"
                    :state="validateFunctions('requiderValidator',addStudentModel.name)"
                    placeholder="Ady"></b-input>
-          <b-input class="inputClasss" v-model="addStudentModel.surname" type="text"
+          <b-input :disabled="isAdded" class="inputClasss" v-model="addStudentModel.surname" type="text"
                    :state="validateFunctions('requiderValidator',addStudentModel.surname)"
                    placeholder="Familiýasy"></b-input>
         </b-col>
@@ -39,6 +41,7 @@
         <b-col md="8">
           <b-input v-model="addStudentModel.studentID"
                    type="number"
+                   :disabled="isAdded"
                    :state="validateFunctions('studentNumberValidator',addStudentModel.studentID)"
                    placeholder="Talyp belgisi"></b-input>
         </b-col>
@@ -50,6 +53,7 @@
         <b-col md="8">
           <b-input v-model="addStudentModel.klass"
                    type="number"
+                   :disabled="isAdded"
                    :state="validateFunctions('klassValidator',addStudentModel.klass)"
                    placeholder="Topar nomeri"></b-input>
         </b-col>
@@ -59,8 +63,11 @@
           <h6 style="margin-top: 5px">Kursuny saylaň:</h6>
         </b-col>
         <b-col md="8">
-          <b-dropdown id="dropdown-left"  text="Kursuny saýlaň" variant="outline-primary" style="width:100%">
-            <b-dropdown-item v-for="course in couses" :key="course.id" @click="selectCourse(course.id)">
+          <b-dropdown :disabled="isAdded" id="dropdown-left"  :text="selectedText('course')" variant="outline-primary" style="width:100%">
+            <b-dropdown-item v-for="course in couses"
+                             :key="course.id"
+                             :selected="addStudentModel.courseID===course.id"
+                             @click="selectCourse(course.id)">
               {{ course.name }}
             </b-dropdown-item>
           </b-dropdown>
@@ -71,10 +78,12 @@
           <h6 style="margin-top: 5px">Fakultet saýlaň:</h6>
         </b-col>
         <b-col md="8">
-          <b-dropdown id="dropdown-left" text="Fakultetini saýlaň" variant="outline-primary" style="width:100%">
+          <b-dropdown :disabled="isAdded"   id="dropdown-left" :text="selectedText('facultet')" variant="outline-primary" style="width:100%">
             <b-dropdown-item v-for="facultet in facultetler" :key="facultet.id"
-                             @click="selectFaculty(facultet.id)">{{
-                facultet.nameTM
+                             @click="selectFaculty(facultet.id)"
+                             :selected="addStudentModel.facultyID===facultet.id"
+                             :value="facultet.id" >{{
+                facultet.name
               }}
             </b-dropdown-item>
           </b-dropdown>
@@ -82,6 +91,10 @@
       </b-row>
     </b-col>
   </b-row>
+    <div style="text-align: center;margin-top: 10px">
+      <b-button variant="primary" v-if="!isAdded" @click="createStudent" >Ýatda sakla</b-button>
+    </div>
+  </div>
 </template>
 <script>
 import {mapActions, mapGetters} from "vuex";
@@ -100,23 +113,39 @@ export default {
       },
       image: null,
       imageUrl: null,
+      isAdded:false
     }
   },
   methods: {
     ...mapActions({
-      loadWelayatlar: 'weleyatlarstore/loadWelayatlar',
       loadFaculties: 'facultetler/loadFacultetler',
       addStudentAction: 'students/addStudent',
       loadCourses: 'courses/loadCourses',
       addDetailToStudent: 'students/addStudentDetail',
-      addStudentImageAction: 'students/addStudentImage'
+      addStudentImageAction: 'students/addStudentImage',
+      getStudentById:'students/getStudentById'
     }),
+    initComponent(){
+      this.addStudentModel= {
+        studentID: 0,
+          fatherName: "",
+          name: "",
+          surname: "",
+          courseID: 0,
+          facultyID: 0,
+          klass: ""
+      };
+      this.image=null;
+      this.imageUrl=null;
+      this.isAdded=false;
+    },
     mainimagechanged() {
       this.image = this.$refs.mainfile.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
     },
 
     async createStudent() {
+      console.log(this.addStudentModel);
       if (
         this.addStudentModel.course === "" ||
         this.addStudentModel.klass === "" ||
@@ -130,83 +159,88 @@ export default {
         alert("Surat saylan");
         return;
       }
-
-      let success = await this.addStudentAction(this.addStudentModel);//.then(success => {
-      console.log(success);
-      // if (success) {
-      //   this.addStudentModel = {
-      //     studentID: this.addStudentModel.studentID,
-      //     fatherName: "",
-      //     name: "",
-      //     surname: "",
-      //     courseID: 0,
-      //     facultyID: 0,
-      //     klass: ""
-      //   }
-      // }
-      this.studentDetailModel.studentID = this.addStudentModel.studentID;
+      if(!this.addStudentModel.facultyID){
+        alert("Fakulteti saylan");
+        return;
+      }
+      if(!this.addStudentModel.courseID){
+        alert("Kurs saylan");
+        return;
+      }
+      this.$emit('changeIsLoading',true);
+      let success = await this.addStudentAction(this.addStudentModel);
       let form = new FormData();
       form.append('file', this.image);
       success = await this.addStudentImageAction({
-        studentID: this.addStudentModel.studentID,
+        studentID: this.currentID,
         form: form
       });
       if (!success) {
         alert("Something is wrong!");
         return;
       }
-      success = await this.addDetailToStudent(this.studentDetailModel);
-      this.isStudentAdded = true;
-      if (success) {
-        this.studentDetailModel = {
-          yashayanYeri: "",
-          okuwaGirenYID: 0,
-          okuwaGirenYeri: 0,
-          studentID: 0,
-          doglanSenesi: "",
-          doglanYeri: "",
-          milleti: "Turkmen",
-          tamamlanMek: "",
-          bilyanDilleri: "",
-          hunar: "",
-          alymlykDereje: "Ýok",
-          bilimi: "",
-          partiyaAgzasy: "Ýok",
-          dasYurtBolm: "Ýok",
-          mejlisAgzasy: "Ýok"
-        };
-        this.addStudentModel.studentID = 0
-      }
+      this.isAdded=true;
+      this.$emit('changeIsLoading',false);
+      this.$emit('changeStep','step2');
     },
 
     selectFaculty(index) {
+      console.log(index);
       this.addStudentModel.facultyID = index;
     },
     selectCourse(index) {
-      this.addStudentModel.course = index;
+      console.log(index);
+      this.addStudentModel.courseID = index;
     },
-    selectGirenYeri(index) {
-      this.studentDetailModel.okuwaGirenYID = index;
-    },
+
     validateFunctions(name,value) {
       const validators=this.$customValidators;
-
       return  validators[name](value);
+    },
+    selectedText(type){
+      if(type==='course'){
+        if(this.addStudentModel.courseID){
+          return this.couses.find(x=>x.id===this.addStudentModel.courseID)['name']
+        } else return 'Kursuny saýlaň'
+      } else {
+        if(this.addStudentModel.facultyID){
+          return this.facultetler.find(x=>x.id===this.addStudentModel.facultyID)['name']
+        } else {
+          return "Fakultetini saýlaň"
+        }
+      }
     },
   },
   computed: {
     ...mapGetters({
-      welayatlar: 'weleyatlarstore/getWelayatlar',
       facultetler: 'facultetler/getFacultetler',
-      couses: 'courses/getCourses'
-    })
-  },
+      couses: 'courses/getCourses',
+      currentID:'students/getCurrentId'
+    }),
 
+  },
   async mounted() {
-    if (this.welayatlar.length === 0) {
-      await this.loadWelayatlar();
+    if (this.facultetler.length === 0) {
+      await this.loadFaculties();
+    }
+    if (this.couses.length===0){
+      await this.loadCourses();
+    }
+    if(localStorage['id']){
+      console.log(localStorage['id'])
+      let result=await this.getStudentById(localStorage['id']);
+      if(!result){
+        localStorage.removeItem('id');
+      } else {
+        this.addStudentModel=result;
+        this.imageUrl=this.$axios.defaults.baseURL +result.image;
+        this.isAdded=true;
+        this.$emit('changeStep','step2');
+        this.$store.commit('students/setCurrentId',localStorage['id']);
+      }
     }
   }
+
 }
 </script>
 <style scoped>

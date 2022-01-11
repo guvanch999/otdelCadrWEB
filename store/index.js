@@ -14,6 +14,7 @@ export const mutations = {
   setToken(state, token) {
       state.token = token;
       console.log(token);
+      localStorage.setItem("token",token);
       Cookie.set('mainToken',token);
   },
   setReturnPath(state,path){
@@ -27,7 +28,7 @@ export const actions = {
       if (!response.error) {
         commit('setToken', response.body.token);
       } else {
-        commit('setToken', null);
+       commit('setToken', null);
       }
     }).catch(err => console.log(err));
   }

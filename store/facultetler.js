@@ -12,9 +12,10 @@ export const mutations = {
 
 export const actions = {
   async loadFacultetler({commit}){
-    await this.$axios.$get('/get-faculties',{
+    await this.$axios.$get('/get-faculty',{
     }).then((response)=>{
-      commit('setFacultetler',response);
+      console.log(response);
+      commit('setFacultetler',response.body);
     }).catch(err=>console.log(err));
   }
 }

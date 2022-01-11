@@ -12,9 +12,9 @@ export const mutations = {
 
 export const actions = {
   async loadCourses({commit}){
-    await this.$axios.$get('/get-courses',{
+    await this.$axios.$get('/get-course',{
     }).then((response)=>{
-      commit('setCourses',response);
+      commit('setCourses',response.body);
     }).catch(err=>console.log(err));
   }
 }

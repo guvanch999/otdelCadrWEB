@@ -18,9 +18,9 @@ export default {
 
 <style>
 .mainclassfordefoult{
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
   background-color: rgba(228, 228, 229, 0.58);
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 </style>

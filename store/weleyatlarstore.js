@@ -14,7 +14,7 @@ export const actions = {
     async loadWelayatlar({commit}){
       await this.$axios.$get('/get-welayat',{
       }).then((response)=>{
-          commit('setWelayatlar',response);
+          commit('setWelayatlar',response.body);
       }).catch(err=>console.log(err));
     }
 }

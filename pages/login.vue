@@ -26,6 +26,7 @@
 </template>
 <script>
 import {mapActions, mapGetters} from "vuex";
+import Cookie from "js-cookie";
 
 export default {
   middleware:['auth'],
@@ -42,8 +43,11 @@ export default {
       loginFunction: 'liginAction'
     }),
     async handleLogin(event) {
-      event.preventDefault()
+      event.preventDefault();
+      console.log(this.loginProps);
+
       await this.loginFunction(this.loginProps);
+
       if (this.userToken) {
         let returnTo=this.returnPath!=='/login'?this.returnPath:'/students/addstudent';
         returnTo=returnTo!==''?returnTo:'/students/addstudent'
@@ -59,6 +63,17 @@ export default {
       userToken: 'getUserToken',
       returnPath:'getReturnPath'
     })
+  },
+  mounted() {
+    let token = Cookie.get('mainToken');
+    if(token){
+      this.$store.commit('setToken',token);
+      let returnTo=this.returnPath!=='/login'?this.returnPath:'/students/addstudent';
+      returnTo=returnTo!==''?returnTo:'/students/addstudent'
+      console.log(returnTo)
+      this.$router.push(returnTo);
+    }
+
   }
 }
 </script>
