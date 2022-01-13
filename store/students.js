@@ -50,8 +50,26 @@ export const actions = {
   async addOptionalDetails({commit},data){
     return  await this.$axios.$post('/add-detail',data).then(response=>{
       if(response && !response.error){
+        localStorage['optionalDetailId']=response.id;
         return true;
       } else return false;
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
+  },
+  async getOptionalDetail({commit},studentId){
+    return await this.$axios.$get('/get-detail',{
+      params:{
+        studentID:studentId
+      }
+    }).then(response=>{
+      if(response && !response.error){
+        console.log(response);
+        return response.body[0];
+      } else {
+        return false;
+      }
     }).catch(err=>{
       console.log(err);
       return false;
@@ -120,6 +138,22 @@ export const actions = {
       return false;
     });
   },
+  async updateStudentById({commit},data){
+    return await this.$axios.$put('/update-student',data.inf,{
+      params:{
+        id:data.currentId
+      }
+    }).then(response=>{
+      if(response && !response.error){
+        return true;
+      } else {
+        return false;
+      }
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
+  },
   async getStudentById({commit},id){
     return  await this.$axios.$get('/get-student',{
       params:{
@@ -183,7 +217,23 @@ export const actions = {
       console.log(err);
       return false;
     })
-  }
+  },
+  async updateStudentDetail({commit},data){
+    return await this.$axios.$put('/update-student-detail',data.inf,{
+      params:{
+        id:data.detailId
+      }
+    }).then(response=>{
+      if(response && !response.error){
+        return true;
+      } else {
+        return false;
+      }
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
+  },
 
 }
 

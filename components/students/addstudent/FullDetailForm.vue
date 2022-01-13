@@ -186,7 +186,9 @@
       </b-col>
     </b-row>
     <div style="text-align: center;margin-top: 10px">
-      <b-button variant="primary" @click="createStudent" >Ýatda sakla</b-button>
+        <b-button variant="primary" @click="$emit('changeStep','step1',{ update:true})" >Yza</b-button>
+        <b-button variant="primary" @click="createStudent" >Ýatda sakla</b-button>
+        <b-button variant="primary" @click="$emit('changeStep','step3',{ update:false})" >Indiki</b-button>
     </div>
   </div>
 </template>
@@ -217,33 +219,27 @@ export default {
   methods: {
     ...mapActions({
       addDetailToStudent: 'students/addStudentDetail',
-      loadWelayatlar:'weleyatlarstore/loadWelayatlar'
+      loadWelayatlar:'weleyatlarstore/loadWelayatlar',
+      updateStudentDetail:'students/updateStudentDetail'
     }),
     async createStudent() {
       this.studentDetailModel.studentID = this.currentId;
       this.$emit('changeIsLoading',true);
-      let success = await this.addDetailToStudent(this.studentDetailModel);
+      let success=false;
+      if(localStorage['detailId']){
+        let tempData={
+          detailId:localStorage['detailId'],
+          inf:this.studentDetailModel
+        }
+        success= await this.updateStudentDetail(tempData);
+      } else {
+        success = await this.addDetailToStudent(this.studentDetailModel);
+      }
+      this.$emit('changeIsLoading',false);
       if (success) {
-        this.studentDetailModel = {
-          yashayanYeri: "",
-          okuwaGirenYID: 0,
-          salgydakyYeri: "",
-          studentID: 0,
-          doglanSenesi: "",
-          doglanYeri: "",
-          milleti: "tÜrkmen",
-          tamamlanMek: "",
-          bilyanDilleri: "",
-          hunar: "",
-          alymlykDereje: "Ýok",
-          bilimi: "",
-          partiyaAgzasy: "Ýok",
-          dasYurtBolm: "Ýok",
-          mejlisAgzasy: "Ýok"
-        };
 
-        this.$emit('changeIsLoading',false);
-        this.$emit('changeStep','step3');
+      } else {
+        alert("bir zat nadogry");
       }
     },
     selectGirenYeri(index) {
@@ -280,9 +276,14 @@ export default {
     if (this.welayatlar.length === 0) {
       await this.loadWelayatlar();
     }
-    if(localStorage['detailId']){
-      this.$emit('changeStep','step3');
+    if (localStorage['detailId']){
+        let result=await this.$store.dispatch('students/loadStudentDetail',localStorage['detailId']);
+        if(result){
+          delete result['id'];
+          this.studentDetailModel=result;
+        }
     }
+
   }
 }
 </script>

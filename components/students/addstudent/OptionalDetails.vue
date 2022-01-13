@@ -208,6 +208,7 @@ export default {
     async finishSetup(){
       localStorage.removeItem("id");
       localStorage.removeItem('detailId');
+      localStorage.removeItem('optionalDetailId')
       this.$emit('changeStep','step1');
     }
   },
@@ -215,6 +216,22 @@ export default {
       ...mapGetters({
         currentId:'students/getCurrentId'
       })
+  },
+  async mounted() {
+        if(localStorage['id']){
+          let result=await this.$store.dispatch('students/getOptionalDetail',localStorage['id']);
+          if(result){
+            //this.optionalDetailModel=result;
+            Object.keys(this.optionalDetailModel).forEach(el=>{
+              if(result[el]){
+                this.optionalDetailModel[el]=result[el];
+              }
+            })
+            this.isAdded=true;
+          } else {
+            this.isAdded=false;
+          }
+        }
   }
 }
 </script>

@@ -92,7 +92,8 @@
     </b-col>
   </b-row>
     <div style="text-align: center;margin-top: 10px">
-      <b-button variant="primary" v-if="!isAdded" @click="createStudent" >Ýatda sakla</b-button>
+      <b-button variant="primary" v-if="!isAdded && !updateState" @click="createStudent" >Ýatda sakla</b-button>
+      <b-button variant="primary" v-if="updateState" @click="createStudent" >Üýtget</b-button>
     </div>
   </div>
 </template>
@@ -113,7 +114,9 @@ export default {
       },
       image: null,
       imageUrl: null,
-      isAdded:false
+      isAdded:false,
+      updateState:false,
+      imageChanged:false
     }
   },
   methods: {
@@ -123,7 +126,8 @@ export default {
       loadCourses: 'courses/loadCourses',
       addDetailToStudent: 'students/addStudentDetail',
       addStudentImageAction: 'students/addStudentImage',
-      getStudentById:'students/getStudentById'
+      getStudentById:'students/getStudentById',
+      updateStudent:'students/updateStudentById'
     }),
     initComponent(){
       this.addStudentModel= {
@@ -139,11 +143,16 @@ export default {
       this.imageUrl=null;
       this.isAdded=false;
     },
+    prepeaToUpdate(){
+      this.isAdded=false;
+      this.updateState=true;
+      this.imageChanged=false;
+    },
     mainimagechanged() {
       this.image = this.$refs.mainfile.files[0];
       this.imageUrl = URL.createObjectURL(this.image);
+      this.imageChanged=true;
     },
-
     async createStudent() {
       console.log(this.addStudentModel);
       if (
@@ -155,7 +164,7 @@ export default {
         alert("Maglumatlary doly doldurylmadyk");
         return;
       }
-      if (!this.image) {
+      if (!this.image && !this.updateState) {
         alert("Surat saylan");
         return;
       }
@@ -168,20 +177,41 @@ export default {
         return;
       }
       this.$emit('changeIsLoading',true);
-      let success = await this.addStudentAction(this.addStudentModel);
-      let form = new FormData();
-      form.append('file', this.image);
-      success = await this.addStudentImageAction({
-        studentID: this.currentID,
-        form: form
-      });
+      let success=false;
+      console.log('emittes')
+      if(this.updateState){
+        let updateData={
+          currentId:this.currentID,
+          inf:this.addStudentModel
+        }
+        success=await this.updateStudent(updateData);
+        if(this.updateState && this.imageChanged){
+          let form = new FormData();
+          form.append('file', this.image);
+          success = await this.addStudentImageAction({
+            studentID: this.currentID,
+            form: form
+          });
+        }
+      } else {
+        success = await this.addStudentAction(this.addStudentModel);
+        let form = new FormData();
+        form.append('file', this.image);
+        success = await this.addStudentImageAction({
+          studentID: this.currentID,
+          form: form
+        });
+      }
       if (!success) {
         alert("Something is wrong!");
-        return;
+
+      } else {
+        this.isAdded=true;
+        this.updateState=false;
+        this.imageChanged=false;
+        this.$emit('changeIsLoading',false);
+        this.$emit('changeStep','step2');
       }
-      this.isAdded=true;
-      this.$emit('changeIsLoading',false);
-      this.$emit('changeStep','step2');
     },
 
     selectFaculty(index) {
@@ -192,7 +222,6 @@ export default {
       console.log(index);
       this.addStudentModel.courseID = index;
     },
-
     validateFunctions(name,value) {
       const validators=this.$customValidators;
       return  validators[name](value);
@@ -217,7 +246,6 @@ export default {
       couses: 'courses/getCourses',
       currentID:'students/getCurrentId'
     }),
-
   },
   async mounted() {
     if (this.facultetler.length === 0) {

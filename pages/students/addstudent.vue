@@ -114,12 +114,17 @@ export default {
       this.isAdding=st;
     },
     goToNextStep(step,data){
-      console.log("emitted2",step);
+
       switch (step){
-        case 'step1':
-          this.$refs.mainRef.initComponent();
+        case 'step1':{
+          if(data && data.update){
+            this.$refs.mainRef.prepeaToUpdate();
+          } else {
+            this.$refs.mainRef.initComponent();
+          }
           this.changeLabel('');
-        break;
+          break;
+        }
         case 'step2':this.changeLabel('label1');
         break;
         case 'step3':this.changeLabel('label2');
