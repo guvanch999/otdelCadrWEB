@@ -131,6 +131,22 @@ export default {
       }
       this.$emit('changeIsLoading',true);
       let success=await this.addParent(this.addParentModel);
+      if(success){
+        this.addParentModel={
+          fatherName: "",
+          name: "",
+          surname: "",
+          birthPlace: "",
+          birthYear: "",
+          yashayanYeri: "",
+          workingPlace: "",
+          sudimost: "",
+          studentID: 0,
+          parentstatusID: 0
+        }
+      } else {
+        alert("Ýalpyşlyk ýüze çykdy");
+      }
       this.$emit('changeIsLoading',false);
     },
     nextStep() {

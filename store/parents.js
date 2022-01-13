@@ -40,12 +40,13 @@ export const actions = {
     });
   },
   async addStudentParent({commit},data){
-    await this.$axios.$post('/add-parent',data).then(
+    return  await this.$axios.$post('/add-parent',data).then(
       response=>{
         if(response){
           if(response && !response.error){
-            data.id=response.id;
-            commit('pushParent',data);
+            let temp=Object.assign({},data);
+            temp.id=response.id;
+            commit('pushParent',temp);
             return true;
           } else {
             return false;

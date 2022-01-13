@@ -41,6 +41,7 @@
       </tbody>
     </table>
     <div style="text-align: center;margin-top: 10px">
+      <b-button variant="primary" @click="$emit('changeStep','step2',{update:false})">Yza</b-button>
       <b-button variant="primary" @click="nextStep">Indiki</b-button>
     </div>
   </div>
