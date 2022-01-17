@@ -4,11 +4,11 @@
       <div class="logo_name" style="margin-left:40px">Ishgarler bolumi</div>
     </div>
     <ul class="nav-list">
-      <li v-for="menu in menus" :key="menu.id">
-        <nuxt-link class="a" :to="localePath(menu.locale)" :style="menu.selected ?{'background': 'rgba(255, 255, 255, 0.3)' }:{}">
+      <li v-for="(menu,index) in menus" :key="menu.id">
+        <div class="a" @click="refactor(menu,index)"  :style="menu.selected ?{'background': 'rgba(255, 255, 255, 0.3)' }:{}">
           <b-icon :icon="menu.icon"   variant="light" style="margin: 10px;width: 25px;height: 25px"/>
           <span class="links_name">{{ menu.name }}</span>
-        </nuxt-link>
+        </div>
         <span class="tooltip">{{ menu.name }}</span>
       </li>
     </ul>
@@ -31,6 +31,11 @@ export default {
     };
   },
   methods: {
+    refactor(menu,index){
+      console.log(menu);
+      this.$store.commit('setSelected',index);
+      this.$router.push(menu.locale);
+    }
   },
   created(){
   },

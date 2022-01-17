@@ -185,7 +185,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      addToServer:'students/addOptionalDetails'
+      addToServer:'students/addOptionalDetails',
+      updateFromServer:'students/updateFromServer'
     }),
     changeValues(param,value){
       this.optionalDetailModel[param]=value;
@@ -197,10 +198,19 @@ export default {
     async addDetails(){
       this.optionalDetailModel.studentID = this.currentId;
       this.$emit('changeIsLoading',true);
-      let success=await this.addToServer(this.optionalDetailModel);
+      let success=false;
+      if(this.isAdded){
+        let tempObj={
+          id:this.currentId,
+          inf:this.optionalDetailModel
+        }
+        success=await this.updateFromServer(tempObj);
+      } else {
+        success=await this.addToServer(this.optionalDetailModel);
+      }
       if(success){
           this.isAdded=true;
-      } else{
+      } else {
         alert("Bir zat nadogry");
       }
       this.$emit('changeIsLoading',false);

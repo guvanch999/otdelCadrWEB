@@ -5,7 +5,8 @@ export const state = () => ({
   limit:20,
   page:0,
   currentId:0,
-  workPlaces:[]
+  workPlaces:[],
+  pageCount:0,
 })
 
 export const mutations = {
@@ -43,10 +44,35 @@ export const mutations = {
     } else {
       state.currentId=0;
     }
+  },
+  setAllStudents(state,data){
+    if(data.students){
+      state.studentList=data.students;
+      state.pageCount=data.count;
+    } else {
+      state.studentList=[];
+    }
   }
 }
 
 export const actions = {
+  async loadAllStudents({commit},page){
+    await this.$axios.$post('/get-students',{},{
+      params:{
+        page:page
+      }
+    }).then(response=>{
+        if(response && !response.error){
+          commit('setAllStudents',response.body);
+        } else {
+          commit('setAllStudents',[]);
+        }
+    }).catch(err=>{
+      console.log(err);
+      commit('setAllStudents',[]);
+      }
+    )
+  },
   async addOptionalDetails({commit},data){
     return  await this.$axios.$post('/add-detail',data).then(response=>{
       if(response && !response.error){
@@ -218,6 +244,71 @@ export const actions = {
       return false;
     })
   },
+  async addStudentTPDetail({commit},data){
+    return await this.$axios.$post('/add-third-details',data)
+      .then(response=>{
+        if(response && !response.error){
+          localStorage['thirdPartId']=response.id;
+          return true;
+        } else {
+          return  false;
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+        return false;
+      })
+
+  },
+  async updateStudentTPDetail({commit},data){
+    return await this.$axios.$put('/update-third-details',data.inf,{
+      params:{
+        id:data.id
+      }
+    })
+      .then(response=>{
+        if(response && !response.error){
+          return true;
+        } else return false;
+      })
+      .catch(err=>{
+        console.log(err);
+        return false;
+      })
+  },
+  async getTPDetail({commit},id){
+    return await this.$axios.$get('/get-third-details',{
+      params:{
+        id:id
+      }
+    })
+      .then(response=>{
+        if(response && !response.error){
+          return response.body[0];
+        } else
+          return  false;
+      })
+      .catch(err=>{
+        console.log(err);
+        return false;
+      })
+  },
+  async updateFromServer({commit},data){
+    return await this.$axios.$put('/update-detail',data.inf,{
+      params:{
+        studentID:data.id
+      }
+    }).then(response=>{
+      if(response && !response.error){
+        return true;
+      } else {
+        return false;
+      }
+    }).catch(err=>{
+      console.log(err);
+      return false;
+    })
+  },
   async updateStudentDetail({commit},data){
     return await this.$axios.$put('/update-student-detail',data.inf,{
       params:{
@@ -241,7 +332,6 @@ export const getters = {
   getStudentList(state) {
     return state.studentList
   },
-  getPageCount:s=>Math.ceil(s.totalCount/s.limit),
   getCurrentId:st=>{
     if(st.currentId){
       return st.currentId;
@@ -252,5 +342,7 @@ export const getters = {
     }
   },
   getWorkedPlaces:s=>s.workPlaces,
+  getAllStudents:s=>s.studentList,
+  getPageCount:s=>s.pageCount
 
 }

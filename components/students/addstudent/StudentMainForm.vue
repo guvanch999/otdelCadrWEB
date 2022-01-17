@@ -262,6 +262,7 @@ export default {
       } else {
         this.addStudentModel=result;
         this.imageUrl=this.$axios.defaults.baseURL +result.image;
+
         this.isAdded=true;
         this.$emit('changeStep','step2');
         this.$store.commit('students/setCurrentId',localStorage['id']);

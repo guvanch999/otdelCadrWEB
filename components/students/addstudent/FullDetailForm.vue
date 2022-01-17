@@ -29,7 +29,7 @@
             <h6 style="margin-top: 5px">Okuwa giren ýeri:</h6>
           </b-col>
           <b-col md="8">
-            <b-dropdown  :text="selectedText('welayat')" style="width:100%" variant="primary"
+            <b-dropdown :text="selectedText('welayat')" style="width:100%" variant="primary"
                         offset="0 5">
               <b-dropdown-item v-for="welayat in welayatlar" :key="welayat.id"
                                @click="selectGirenYeri(welayat.id)">{{ welayat.name }}
@@ -152,7 +152,9 @@
             <h6 style="margin-top: 5px">Öý telfony:</h6>
           </b-col>
           <b-col md="8">
-            <b-input type="text"       placeholder="Öý telfony"></b-input>
+            <b-input type="text"
+                     v-model="TPDetailModel.oy_telefony"
+                     placeholder="Öý telfony"></b-input>
           </b-col>
         </b-row>
         <b-row style="margin-top: 15px">
@@ -160,7 +162,9 @@
             <h6 style="margin-top: 5px">El tlfony:</h6>
           </b-col>
           <b-col md="8">
-            <b-input type="text" placeholder="El tlfony"></b-input>
+            <b-input type="text"
+                     v-model="TPDetailModel.el_telefony"
+                     placeholder="El tlfony"></b-input>
           </b-col>
         </b-row>
 
@@ -172,7 +176,9 @@
             <h6 style="margin-top: 5px">Kakasynyň telfon belgisi:</h6>
           </b-col>
           <b-col md="8">
-            <b-input type="text" placeholder="Kakasynyň telfon belgisi"></b-input>
+            <b-input type="text"
+                     v-model="TPDetailModel.kakasynyn_tel"
+                     placeholder="Kakasynyň telfon belgisi"></b-input>
           </b-col>
         </b-row>
         <b-row style="margin-top: 15px">
@@ -180,20 +186,23 @@
             <h6 style="margin-top: 5px">Ejesiniň telfon belgisi:</h6>
           </b-col>
           <b-col md="8">
-            <b-input type="text" placeholder="Ejesiniň telfon belgisi"></b-input>
+            <b-input type="text"
+                     v-model="TPDetailModel.ejesinin_tel"
+                     placeholder="Ejesiniň telfon belgisi"></b-input>
           </b-col>
         </b-row>
       </b-col>
     </b-row>
     <div style="text-align: center;margin-top: 10px">
-        <b-button variant="primary" @click="$emit('changeStep','step1',{ update:true})" >Yza</b-button>
-        <b-button variant="primary" @click="createStudent" >Ýatda sakla</b-button>
-        <b-button variant="primary" @click="$emit('changeStep','step3',{ update:false})" >Indiki</b-button>
+      <b-button variant="primary" @click="$emit('changeStep','step1',{ update:true})">Yza</b-button>
+      <b-button variant="primary" @click="createStudent">Ýatda sakla</b-button>
+      <b-button variant="primary" @click="$emit('changeStep','step3',{ update:false})">Indiki</b-button>
     </div>
   </div>
 </template>
 <script>
 import {mapActions, mapGetters} from "vuex";
+
 export default {
   data() {
     return {
@@ -214,28 +223,50 @@ export default {
         mejlisAgzasy: "Ýok",
         salgydakyYeri: ''
       },
+      tpdId:0,
+      TPDetailModel: {
+        oy_salgysy: "",
+        oy_telefony: "Ýok",
+        el_telefony: "Ýok",
+        kakasynyn_tel: "Ýok",
+        ejesinin_tel: "Ýok",
+        student_id: 0
+      }
     }
   },
   methods: {
     ...mapActions({
       addDetailToStudent: 'students/addStudentDetail',
-      loadWelayatlar:'weleyatlarstore/loadWelayatlar',
-      updateStudentDetail:'students/updateStudentDetail'
+      loadWelayatlar: 'weleyatlarstore/loadWelayatlar',
+      updateStudentDetail: 'students/updateStudentDetail',
+      addTPDetail: 'students/addStudentTPDetail',
+      updateTPDetail: 'students/updateStudentTPDetail'
     }),
     async createStudent() {
       this.studentDetailModel.studentID = this.currentId;
-      this.$emit('changeIsLoading',true);
-      let success=false;
-      if(localStorage['detailId']){
-        let tempData={
-          detailId:localStorage['detailId'],
-          inf:this.studentDetailModel
+      this.$emit('changeIsLoading', true);
+      let success = false;
+      if (localStorage['detailId']) {
+        let tempData = {
+          detailId: localStorage['detailId'],
+          inf: this.studentDetailModel
         }
-        success= await this.updateStudentDetail(tempData);
+        success = await this.updateStudentDetail(tempData);
+        if(success){
+            tempData={
+              id:this.tpdId,
+              inf:this.TPDetailModel
+            }
+            success=await this.updateTPDetail(tempData);
+        }
       } else {
         success = await this.addDetailToStudent(this.studentDetailModel);
+        if(success){
+          this.TPDetailModel.student_id=this.currentId;
+          success=await this.addTPDetail(this.TPDetailModel)
+        }
       }
-      this.$emit('changeIsLoading',false);
+      this.$emit('changeIsLoading', false);
       if (success) {
 
       } else {
@@ -249,11 +280,11 @@ export default {
       const validators = this.$customValidators;
       return validators[name](value);
     },
-    selectedText(type){
-      if(type==='welayat'){
-        if(this.studentDetailModel.okuwaGirenYID){
-          let result= this.welayatlar.find(x=>x.id===this.studentDetailModel.okuwaGirenYID)['name'];
-          if(result){
+    selectedText(type) {
+      if (type === 'welayat') {
+        if (this.studentDetailModel.okuwaGirenYID) {
+          let result = this.welayatlar.find(x => x.id === this.studentDetailModel.okuwaGirenYID)['name'];
+          if (result) {
             return result;
           } else {
             return "Okuwa giren ýeri"
@@ -266,7 +297,7 @@ export default {
   computed: {
     ...mapGetters({
       welayatlar: 'weleyatlarstore/getWelayatlar',
-      currentId:'students/getCurrentId'
+      currentId: 'students/getCurrentId'
 
     }),
 
@@ -276,12 +307,20 @@ export default {
     if (this.welayatlar.length === 0) {
       await this.loadWelayatlar();
     }
-    if (localStorage['detailId']){
-        let result=await this.$store.dispatch('students/loadStudentDetail',localStorage['detailId']);
-        if(result){
-          delete result['id'];
-          this.studentDetailModel=result;
+    if (localStorage['detailId']) {
+      let result = await this.$store.dispatch('students/loadStudentDetail', localStorage['detailId']);
+      if (result) {
+        delete result['id'];
+        this.studentDetailModel = result;
+      }
+      if(localStorage['thirdPartId']){
+        let detail=await this.$store.dispatch('students/getTPDetail',localStorage['thirdPartId']);
+        if(detail){
+          this.tpdId=detail.id;
+          delete  detail['id'];
+          this.TPDetailModel=detail
         }
+      }
     }
 
   }
