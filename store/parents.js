@@ -67,9 +67,10 @@ export const actions = {
     }).then(response=>{
       if(response && !response.error){
         commit('setParents',response.body);
-      }
+      } else commit('setParents',[]);
     }).catch(err=>{
       console.log(err);
+      commit('setParents',[]);
       return false;
     })
   }

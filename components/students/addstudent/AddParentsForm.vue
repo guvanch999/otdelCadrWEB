@@ -1,6 +1,6 @@
 <template>
   <div>
-    <parentComponent v-for="parent in parents"  :parent="parent" :key="parent.id"/>
+    <parentComponent @removeFrom="detetedParent" v-for="parent in parents"  :parent="parent" :key="parent.id"/>
     <table>
       <thead>
       <th style="width:200px">
@@ -83,7 +83,10 @@
     </table>
     <div style="text-align: center;margin-top: 10px;">
       <b-row>
-          <b-col md="8">
+        <b-col md="4">
+          <b-button variant="primary" @click="$emit('changeStep','step3',{update:false})">Yza</b-button>
+        </b-col>
+          <b-col md="4">
             <b-button variant="primary" @click="addParentActionHandler" >Goş</b-button>
           </b-col>
         <b-col md="4">
@@ -123,6 +126,9 @@ export default {
       loadParentStatuses:'parents/loadParentStatuses',
       addParent:'parents/addStudentParent'
     }),
+    detetedParent(index){
+     this.$store.dispatch('parents/loadParents',localStorage['id'])
+    },
     async addParentActionHandler(){
       this.addParentModel.studentID=this.currentId;
       if(this.addParentModel.parentstatusID===0){

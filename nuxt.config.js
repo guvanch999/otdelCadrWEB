@@ -70,7 +70,7 @@ export default {
     icons: true
   },
   axios: {
-    baseURL:process.env.BASE_URL || 'http://217.174.233.210:8000/',
+    baseURL:process.env.BASE_URL || 'http://10.1.5.111:8000/',
     proxyHeaders: false,
     credentials: false
     // debug: true

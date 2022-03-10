@@ -9,7 +9,7 @@
         <div class="mt-3 pl-3 pr-5 pb-3 pt-3 blockClass ">
           <b-row>
             <b-col md="2" style="min-width: 150px">
-              <b-button class="singinbuttonstyle">
+              <b-button class="singinbuttonstyle" :href="localePath('/students/dashboard')">
                 <BIconArrowLeft/>
                 Yza
               </b-button>

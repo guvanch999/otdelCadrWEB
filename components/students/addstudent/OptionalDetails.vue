@@ -218,7 +218,7 @@ export default {
     async finishSetup(){
       localStorage.removeItem("id");
       localStorage.removeItem('detailId');
-      localStorage.removeItem('optionalDetailId')
+      localStorage.removeItem('optionalDetailId');
       this.$emit('changeStep','step1');
     }
   },

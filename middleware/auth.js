@@ -7,7 +7,7 @@ export default function (context) {
       context.store.commit('setToken',Cookie.get('mainToken'));
       //context.redirect(context.app.localePath('/students/addstudent'))
       context.store.commit('setReturnPath',context.route.fullPath);
-    } else {
+    } else if(context.route.fullPath!=='/login') {
       context.redirect(context.app.localePath("/login"));
     }
   }

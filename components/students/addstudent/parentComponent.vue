@@ -1,5 +1,14 @@
 <template>
   <div class="addedParentClass">
+    <b-row>
+      <b-col md="10">
+      </b-col>
+      <b-col md="2">
+        <div style="text-align: right">
+          <img src="/Delete_btn.png" @click="deleteParent"  width="30" height="30" style="margin:10px"/>
+        </div>
+      </b-col>
+    </b-row>
     <table>
       <thead>
       <th style="width:200px">
@@ -83,6 +92,22 @@ export default {
     ...mapGetters({
       parentStatus:'parents/getParentStatus'
     }),
+  },
+  methods:{
+    async deleteParent(){
+        await this.$axios.$delete('delete-parent?id='+this.parent.id,{
+        }).then((response)=>{
+          console.log(response)
+            if(response && response.body==='DELETED'){
+              this.$emit('removeFrom',parent.id);
+            } else {
+              alert('Bir zat nadogry');
+            }
+        }).catch(err=>{
+          console.log(err);
+          alert('Bir zat nadogry');
+        })
+    }
   }
 }
 </script>

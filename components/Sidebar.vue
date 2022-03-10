@@ -11,12 +11,20 @@
         </div>
         <span class="tooltip">{{ menu.name }}</span>
       </li>
+      <li >
+        <div class="a" @click="logaut">
+          <b-icon icon="power" variant="light" style="margin: 10px;width: 25px;height: 25px"/>
+          <span class="links_name">Çykmak</span>
+        </div>
+        <span class="tooltip">Çykmak</span>
+      </li>
     </ul>
   </div>
 </template>
 <script>
 import { mapGetters ,mapActions} from 'vuex';
 import {BIconPeopleFill } from 'bootstrap-vue';
+import Cookie from "js-cookie";
 export default {
   name: "Sidebar",
   components:{
@@ -35,6 +43,14 @@ export default {
       console.log(menu);
       this.$store.commit('setSelected',index);
       this.$router.push(menu.locale);
+    },
+    logaut(){
+      localStorage.removeItem("id");
+      localStorage.removeItem('detailId');
+      localStorage.removeItem('optionalDetailId');
+      localStorage.removeItem('token');
+      Cookie.remove('mainToken');
+      this.$router.push('/login');
     }
   },
   created(){

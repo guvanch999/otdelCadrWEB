@@ -85,8 +85,6 @@ export default {
   height: 410px;
   left: 50%;
   top: 25%;
-  /* White */
-
   background: #FFFFFF;
   border-radius: 8px;
   transform: translateX(-50%);
